@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Pending"
+        android:icon="@drawable/baseline_movie_creation_24"
+
+        />
+    <item
+        android:id="@+id/approved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Approved"
+        android:icon="@drawable/ic_approved"
+        />
+    <item
+        android:id="@+id/rejected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Declined"
+        android:icon="@drawable/ic_declined"
+        />
+</menu>
