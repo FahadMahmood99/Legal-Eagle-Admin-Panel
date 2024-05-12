@@ -18,6 +18,7 @@
     import com.google.firebase.database.ValueEventListener;
 
     import java.util.ArrayList;
+    import java.util.HashMap;
 
     /**
      * A simple {@link Fragment} subclass.
@@ -91,9 +92,15 @@
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     approvedList.clear();
-                    for(DataSnapshot snapshot1:snapshot.getChildren()){
-                        approvedList.add((String) snapshot1.getValue());
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        // Get the value as a String
+                        String dataValue = dataSnapshot.getValue(String.class);
+
+                        // Add the String data to the list
+                        approvedList.add(dataValue);
                     }
+
+
                     adapter.notifyDataSetChanged();
                 }
 
