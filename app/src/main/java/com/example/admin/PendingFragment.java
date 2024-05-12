@@ -103,41 +103,52 @@ public class PendingFragment extends Fragment {
         // Update the Firebase database with the data for all people
         //FirebaseDatabase.getInstance().getReference().child("Information").updateChildren(peopleData);
 
-        listView=rootView.findViewById(R.id.listView);
+        listView = rootView.findViewById(R.id.listView);
 
-        ArrayList<String>list=new ArrayList<>();
-        ArrayAdapter adapter = new CustomListAdapter(getContext(),list);
+        ArrayList<String> list = new ArrayList<>();
+        ArrayAdapter adapter = new CustomListAdapter(getContext(), list);
 
         listView.setAdapter(adapter);
 
-        DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("Lawyers");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Lawyers");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
 
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     // Get the unique ID of the lawyer
                     String lawyerId = dataSnapshot.getKey();
 
                     // Get the name of the lawyer
                     String lawyerName = dataSnapshot.child("name").getValue(String.class);
 
-                    // Combine the ID and name to display in the list item
-                    String listItem = lawyerName + " (ID: " + lawyerId + ")";
+                    // Get the court type of the lawyer
+                    String lawyerCourtType = dataSnapshot.child("courtType").getValue(String.class);
+
+                    // Get the email of the lawyer
+                    String lawyerEmail = dataSnapshot.child("email").getValue(String.class);
+
+                    // Get the phone number of the lawyer
+                    String lawyerPhone = dataSnapshot.child("phone").getValue(String.class);
+
+                    // Combine the name, court type, and ID to display in the list item
+                    String listItem = lawyerName + "\n - " + lawyerCourtType +"\n\n"+lawyerEmail+"\n"+lawyerPhone+"\n"+ " (ID: " + lawyerId + ")";
 
                     // Add the combined string to the list
                     list.add(listItem);
                 }
+
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle database error
             }
         });
+
 
 //        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //
