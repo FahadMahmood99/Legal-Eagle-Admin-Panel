@@ -150,96 +150,83 @@ public class PendingFragment extends Fragment {
         });
 
 
-//        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                // Get the selected item
-//                String selectedItem = list.get(position);
-//
-//                // Create and show the AlertDialog
-//                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-//                builder.setTitle("Select Action");
-//                builder.setMessage("Do you want to Approve or Disapprove " + selectedItem+"?");
-//
-//
-//
-//                builder.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
-//
-//
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//
-//
-//                        // Add the selected item to the list of approved items
-//                        AcceptedFragment.addToList(selectedItem);
-//
-//                        // Notify the adapter of the ListView associated with the ApprovedFragment to update the UI
-//                        AcceptedFragment.notifyAdapter();
-//
-//                        // Dismiss the dialog
-//                        dialog.dismiss();
-//                        // Dismiss the dialog
-//
-//                        list.remove(position);
-//                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Pending Lawyers").child(selectedItem);
-//                        databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected item
+                String selectedItem = list.get(position);
+                String lawyerId = selectedItem.substring(selectedItem.lastIndexOf("(ID: ") + 5, selectedItem.lastIndexOf(")"));
+
+
+                // Create and show the AlertDialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setTitle("Select Action");
+                builder.setMessage("Do you want to Approve or Disapprove this Lawyer?");
+
+
+                builder.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Lawyers").child(lawyerId).child("status");
+                        // Update the status field to "Approved"
+
+                        AcceptedFragment.addToList(lawyerId);
+
+                        // Dismiss the dialog
+                        dialog.dismiss();
+
+//                        databaseReference.child("status").setValue("Approved").addOnSuccessListener(new OnSuccessListener<Void>() {
 //                            @Override
 //                            public void onSuccess(Void unused) {
+//                                // Handle success
 //                                Toast.makeText(getContext(), "Passed", Toast.LENGTH_SHORT).show();
 //                            }
 //                        }).addOnFailureListener(new OnFailureListener() {
 //                            @Override
 //                            public void onFailure(@NonNull Exception e) {
+//                                // Handle failure
 //                                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
 //                            }
 //                        });
-//
-//                        adapter.notifyDataSetChanged();
-//
-//
-//                    }
-//                });
-//
-//
-//
-//
-//
-//                builder.setNegativeButton("Disapprove", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        String selectedItem = list.remove(position);
-//
-//                        // Add the selected item to the list of disapproved items
-//                        DeclinedFragment.addToList(selectedItem);
-//
-//                        // Notify the adapter of the ListView associated with the DisapprovedFragment to update the UI
-//                        DeclinedFragment.notifyAdapter();
-//
-//                        // Dismiss the dialog
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//
-//
-//                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                AlertDialog alertDialog = builder.create();
-//                alertDialog.show();
-//
-//                // Return true to indicate that the event has been consumed
-//                return true;
-//            }
-//
-//        });
+                    }
+                });
 
 
+
+                builder.setNegativeButton("Disapprove", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String selectedItem = list.remove(position);
+
+                        // Add the selected item to the list of disapproved items
+                        DeclinedFragment.addToList(selectedItem);
+
+                        // Notify the adapter of the ListView associated with the DisapprovedFragment to update the UI
+                        DeclinedFragment.notifyAdapter();
+
+                        // Dismiss the dialog
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                // Return true to indicate that the event has been consumed
+                return true;
+            }
+
+        });
 
         return rootView;
     }

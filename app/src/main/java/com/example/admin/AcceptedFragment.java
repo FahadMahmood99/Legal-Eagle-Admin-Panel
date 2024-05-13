@@ -28,8 +28,10 @@
     public class AcceptedFragment extends Fragment {
 
         private ListView listView;
-        private static ArrayAdapter<String> adapter;
+
         private ArrayList<String> approvedList = new ArrayList<>();
+        private static ArrayAdapter<String> adapter;
+
 
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,44 +83,53 @@
 
             listView=rootView.findViewById(R.id.listView);
 
-            adapter = new ArrayAdapter<String>(getContext(),R.layout.list_item,approvedList);
+            adapter = new CustomAcceptedAdapter(getContext(), approvedList);
+
+//            adapter = new ArrayAdapter<String>(getContext(),R.layout.list_item,approvedList);
 
             listView.setAdapter(adapter);
 
 
             DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("Approved Lawyers");
 
+            // AcceptedFragment.java
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
+
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     approvedList.clear();
-                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        // Get the value as a String
-                        String dataValue = dataSnapshot.getValue(String.class);
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        // Get the unique ID of the lawyer
+                        String lawyerId = dataSnapshot.getKey();
 
-                        // Add the String data to the list
-                        approvedList.add(dataValue);
+                        // Add the lawyer ID to the list
+                        approvedList.add(lawyerId);
                     }
-
-
                     adapter.notifyDataSetChanged();
                 }
 
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    // Handle onCancelled
                 }
             });
+
 
             return rootView;
         }
 
         public static void addToList(String item) {
+            DatabaseReference approvedRef = FirebaseDatabase.getInstance().getReference().child("Approved Lawyers");
 
-            FirebaseDatabase.getInstance().getReference().child("Approved Lawyers").child("name").setValue(item);
+            // Generate a unique key for the new node in the "Approved Lawyers" branch
+            String key = approvedRef.push().getKey();
 
-
+            // Set the value of the new node to the accepted lawyer's data
+            approvedRef.child(key).setValue(item);
         }
+
+
 
 
         public static void notifyAdapter() {
