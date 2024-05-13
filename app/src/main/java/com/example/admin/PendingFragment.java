@@ -197,16 +197,21 @@ public class PendingFragment extends Fragment {
                 builder.setNegativeButton("Disapprove", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String selectedItem = list.remove(position);
 
-                        // Add the selected item to the list of disapproved items
-                        DeclinedFragment.addToList(selectedItem);
-
-                        // Notify the adapter of the ListView associated with the DisapprovedFragment to update the UI
-                        DeclinedFragment.notifyAdapter();
+                        DeclinedFragment.addToList(lawyerId);
 
                         // Dismiss the dialog
                         dialog.dismiss();
+
+//                        String selectedItem = list.remove(position);
+//
+//                        // Add the selected item to the list of disapproved items
+//                        DeclinedFragment.addToList(selectedItem);
+//
+//                        // Notify the adapter of the ListView associated with the DisapprovedFragment to update the UI
+//                        DeclinedFragment.notifyAdapter();
+
+
                     }
                 });
 
