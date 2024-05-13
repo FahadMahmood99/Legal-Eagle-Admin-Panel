@@ -18,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        Intent iHome = new Intent(SplashScreen.this,MainActivity.class);
+        Intent iHome = new Intent(SplashScreen.this,Login.class);
 
         img=findViewById(R.id.img);
 
